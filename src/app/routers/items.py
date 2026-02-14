@@ -108,4 +108,4 @@ def get_item(item_id: str, order: str = PreOrder.short_name):
     if item is not None:
         return item
 
-    raise HTTPException(status_code=404, detail="Item not found")
+    raise HTTPException(status_code=404, detail=f"{item_id} not found")
