@@ -1,5 +1,6 @@
 # https://caddyserver.com/docs/caddyfile/concepts#environment-variables
 
 :{$CADDY_CONTAINER_PORT} {
+    reverse_proxy /outcomes* http://go-app:8080
     reverse_proxy http://app:{$APP_CONTAINER_PORT}
 }
