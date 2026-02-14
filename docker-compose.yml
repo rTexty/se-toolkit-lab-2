@@ -12,10 +12,23 @@ services:
       - ADDRESS=${APP_CONTAINER_ADDRESS:?'APP_CONTAINER_ADDRESS is a required environment variable'}
       - PORT=${APP_CONTAINER_PORT:?'APP_CONTAINER_PORT is a required environment variable'}
 
+  go-app:
+    build:
+      context: ./src/app/go-server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./src/app/data:/app/data
+    environment:
+      - OUTCOMES_PATH=/app/data/outcomes.json
+
   caddy:
     image: caddy:2.11-alpine
     depends_on:
       - app
+      - go-app
     environment:
       - CADDY_CONTAINER_PORT=${CADDY_CONTAINER_PORT:?'CADDY_CONTAINER_PORT is a required environment variable'}
       - APP_CONTAINER_PORT=${APP_CONTAINER_PORT:?'APP_CONTAINER_PORT is a required environment variable'}
